@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
@@ -77,21 +76,25 @@ export function Modal({
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
+        {asActionItem ? (
+          <Button variant="default">
+            {icon}
+            {actionText}
+          </Button>
+        ) : (
+          <span className="w-[100%] flex flex-row gap-2 items-center text-[14px] hover:cursor-pointer">
+            {icon}
+            {actionText}
+          </span>
+        )}
       </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>Edit profile</DrawerTitle>
-          <DrawerDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DrawerDescription>
+      <DrawerContent className="p-4 text-foreground">
+        <DrawerHeader className="">
+          <DrawerTitle>{title}</DrawerTitle>
+          <DrawerDescription>{description}</DrawerDescription>
         </DrawerHeader>
-        {/* <FormType user={user} className="px-4" /> */}
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
+        {FormType}
+        <DrawerFooter className="pt-2"></DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
