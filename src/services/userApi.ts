@@ -16,18 +16,15 @@ export interface userFormTypes {
 }
 
 export async function createUser(userData: User) {
-  const { data } = await instance.post(`/users/`, userData);
-  if (data.success === false) throw new Error(data.message);
-  return data;
+  const response = await instance.post(`/users/`, userData);
+  if (response.data.success === false) throw new Error(response.data.message);
+  return response.data;
 }
 
 export async function getAllUsers() {
-  try {
-    const { data } = await instance.get("/users");
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  const response = await instance.get("/users");
+  if (response.data.success === false) throw new Error(response.data.message);
+  return response.data;
 }
 
 export async function updateUser({ userId, userData }: updateUserTypes) {

@@ -33,7 +33,7 @@ export const userColumns: ColumnDef<User>[] = [
     accessorKey: "lastName",
     header: "Last Name",
     cell: ({ row }) => {
-      return <p>{row.original.lastName}</p>;
+      return <p key={row.original._id}>{row.original.lastName}</p>;
     },
   },
 
@@ -72,7 +72,9 @@ export const userColumns: ColumnDef<User>[] = [
               <DropdownMenuItem>No Roles Assigned</DropdownMenuItem>
             ) : (
               row.original.roles.map((role: Role) => (
-                <DropdownMenuItem>{role.roleName}</DropdownMenuItem>
+                <DropdownMenuItem key={role._id}>
+                  {role.roleName}
+                </DropdownMenuItem>
               ))
             )}
           </DropdownMenuContent>

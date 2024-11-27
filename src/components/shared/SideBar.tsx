@@ -20,7 +20,7 @@ const items = [
   },
   {
     title: "Roles",
-    url: "role-management",
+    url: "/role-management",
     icon: Settings2,
   },
 ];
