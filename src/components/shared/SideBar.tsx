@@ -15,7 +15,7 @@ import {
 const items = [
   {
     title: "Manage Users",
-    url: "user-management",
+    url: "/",
     icon: CircleUserRound,
   },
   {

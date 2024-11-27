@@ -7,6 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import { SidebarProvider } from "./components/ui/sidebar";
+import { UserProvider } from "./context/userContext";
+import { RoleProvider } from "./context/roleContext";
 
 const queryClient = new QueryClient();
 
@@ -15,9 +17,13 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-          <SidebarProvider>
-            <App />
-          </SidebarProvider>
+          <UserProvider>
+            <RoleProvider>
+              <SidebarProvider>
+                <App />
+              </SidebarProvider>
+            </RoleProvider>
+          </UserProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>

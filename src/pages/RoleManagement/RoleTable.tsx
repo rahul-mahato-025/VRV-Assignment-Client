@@ -26,24 +26,26 @@ import { Modal } from "@/components/shared/Modal";
 import RoleForm from "./RoleForm";
 import { DataTable } from "@/components/shared/DataTable";
 import { createRole } from "@/services/roleApi";
+import { Role } from "@/types/role";
 
 interface TableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  roles: Role[];
 }
 
 export function RoleTable<TData, TValue>({
   columns,
-  data,
+  roles,
 }: TableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const table = useReactTable({
-    data,
+    data: roles as TData[],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -61,7 +63,7 @@ export function RoleTable<TData, TValue>({
   const [addRoleModal, setAddRoleModal] = React.useState(false);
 
   return (
-    <DataTable columns={columns} data={data} table={table}>
+    <DataTable columns={columns} data={roles as TData[]} table={table}>
       <div className="flex items-center py-4 justify-between">
         <Input
           placeholder="Filter roles..."
@@ -83,11 +85,7 @@ export function RoleTable<TData, TValue>({
               asActionItem
               icon={<UserRoundPlus />}
               FormType={
-                <RoleForm
-                  btnText="Submit"
-                  onSubmit={createRole}
-                  setOpen={setAddRoleModal}
-                />
+                <RoleForm onSubmit={createRole} setOpen={setAddRoleModal} />
               }
             />
           }

@@ -1,4 +1,4 @@
-import { CircleX, PlusCircle } from "lucide-react";
+import { CircleX, MoveRight, PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -29,10 +29,17 @@ function BadgeGrid({ itemsList, onChange }: BadgeGridProps) {
   }
 
   function addItem(item: string) {
-    if (item.trim() === "") return;
+    if (item.trim() === "") {
+      toast({
+        variant: "destructive",
+        title: "Permission cannot be empty.",
+      });
+      return;
+    }
 
     if (hasItem(item.toLowerCase())) {
       toast({
+        variant: "destructive",
         title: "Permission already added.",
       });
       return;
@@ -65,8 +72,8 @@ function BadgeGrid({ itemsList, onChange }: BadgeGridProps) {
         </Badge>
       ))}
       <Popover modal={true}>
-        <PopoverTrigger className="flex flex-row gap-2 items-center9">
-          <Button type="button">
+        <PopoverTrigger className="flex flex-row gap-2 items-center">
+          <Button type="button" className="rounded-md">
             <PlusCircle size={20} />
             Add
           </Button>
@@ -78,7 +85,7 @@ function BadgeGrid({ itemsList, onChange }: BadgeGridProps) {
             placeholder="Permission Name"
           />
           <Button type="button" onClick={() => handleChange("add", newItem)}>
-            Add
+            <MoveRight />
           </Button>
         </PopoverContent>
       </Popover>

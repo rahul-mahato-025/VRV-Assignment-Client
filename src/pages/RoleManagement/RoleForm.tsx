@@ -16,11 +16,13 @@ import {
 import { useMutation } from "react-query";
 import { Role } from "@/types/role";
 import BadgeGrid from "@/components/shared/BadgeGrid";
+import Spinner from "@/components/shared/Spinner";
+import { Button } from "@/components/ui/button";
+import { useRoles } from "@/hooks/use-role";
 
 export interface RoleFormProps<T> {
   className?: string;
   role?: Role;
-  btnText: string;
   onSubmit: (data: T) => Promise<any>;
   setOpen: (val: boolean) => void;
 }
@@ -32,15 +34,9 @@ const roleSchema = z.object({
   permissions: z.array(z.string()).default([]),
 });
 
-function RoleForm<T>({
-  className,
-  role,
-  btnText,
-  onSubmit,
-  setOpen,
-}: RoleFormProps<T>) {
+function RoleForm<T>({ className, role, onSubmit, setOpen }: RoleFormProps<T>) {
   const { toast } = useToast();
-
+  const { roles, updateRoles } = useRoles();
   const form = useForm<z.infer<typeof roleSchema>>({
     resolver: zodResolver(roleSchema),
     defaultValues: {
@@ -49,10 +45,28 @@ function RoleForm<T>({
     },
   });
 
+  function hasRole(updatedRole: Role) {
+    return roles.find((role) => role._id === updatedRole._id);
+  }
+
+  function handleUpdate(updatedRole: Role) {
+    if (!hasRole(updatedRole)) {
+      updateRoles([...roles, updatedRole]);
+      return;
+    }
+
+    const newRoles = roles.map((role) => {
+      if (role._id === updatedRole._id) return updatedRole;
+      return role;
+    });
+    updateRoles(newRoles);
+  }
+
   const mutation = useMutation({
     mutationFn: onSubmit,
     onSuccess: (data) => {
       setOpen(false);
+      handleUpdate(data.data);
       toast({
         variant: "success",
         title: data.message,
@@ -76,7 +90,6 @@ function RoleForm<T>({
         },
       } as T);
     } else {
-      console.log(values);
       mutation.mutate({ data: values } as T);
     }
   }
@@ -86,7 +99,6 @@ function RoleForm<T>({
       <FormComponent
         onSubmit={form.handleSubmit(handleFormSubmit)}
         className={className}
-        btnText={btnText}
       >
         <FormField
           control={form.control}
@@ -112,10 +124,8 @@ function RoleForm<T>({
             control={form.control}
             name="permissions"
             render={({ field }) => (
-              <FormItem className="self-end">
-                <FormLabel className="text-foreground">
-                  Add Permissions
-                </FormLabel>
+              <FormItem>
+                <FormLabel>Add Permissions</FormLabel>
                 <FormControl>
                   <BadgeGrid
                     itemsList={field.value}
@@ -129,6 +139,9 @@ function RoleForm<T>({
             )}
           />
         </div>
+        <Button type="submit">
+          {mutation.isLoading ? <Spinner /> : "Submit"}
+        </Button>
       </FormComponent>
     </Form>
   );

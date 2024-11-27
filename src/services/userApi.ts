@@ -24,8 +24,6 @@ export async function createUser(userData: User) {
 export async function getAllUsers() {
   try {
     const { data } = await instance.get("/users");
-    console.log(data);
-
     return data;
   } catch (error) {
     console.log(error);

@@ -25,11 +25,11 @@ function RoleDropdown({ role }: RoleDropdownProps) {
           open={editModalOpen}
           setOpen={setEditModalOpen}
           title="Edit Role"
+          description="Modify role details here"
           icon={<Pencil size={16} />}
           asActionItem={false}
           FormType={
             <RoleForm
-              btnText="Submit"
               role={role}
               onSubmit={updateRole}
               setOpen={setEditModalOpen}
@@ -50,9 +50,9 @@ function RoleDropdown({ role }: RoleDropdownProps) {
           asActionItem={false}
           FormType={
             <ConfirmAction
+              updateEntity="role"
               setOpen={setDeleteModalOpen}
               id={role._id}
-              btnText="Delete"
               onSubmit={deleteRole}
             />
           }

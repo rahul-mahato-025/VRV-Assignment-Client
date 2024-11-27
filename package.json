@@ -31,6 +31,7 @@
     "react-hook-form": "^7.53.2",
     "react-query": "^3.39.3",
     "react-router-dom": "^7.0.1",
+    "react-spinners-kit": "^1.9.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.1",

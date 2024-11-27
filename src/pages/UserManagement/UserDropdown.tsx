@@ -32,11 +32,11 @@ function UserDropdown({ user }: RoleDropdownProps) {
           open={editModalOpen}
           setOpen={setEditModalOpen}
           title="Edit User"
+          description="Modify user details here"
           icon={<Pencil size={16} />}
           asActionItem={false}
           FormType={
             <UserForm
-              btnText="Submit"
               user={user}
               onSubmit={updateUser}
               setOpen={setEditModalOpen}
@@ -57,9 +57,9 @@ function UserDropdown({ user }: RoleDropdownProps) {
           asActionItem={false}
           FormType={
             <ConfirmAction
+              updateEntity="user"
               setOpen={setDeleteModalOpen}
               id={user._id}
-              btnText="Delete"
               onSubmit={deleteUser}
             />
           }

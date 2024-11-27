@@ -33,7 +33,7 @@ export const userColumns: ColumnDef<User>[] = [
     accessorKey: "lastName",
     header: "Last Name",
     cell: ({ row }) => {
-      return row.original.lastName ? row.original.lastName : "-";
+      return <p>{row.original.lastName}</p>;
     },
   },
 
@@ -60,7 +60,7 @@ export const userColumns: ColumnDef<User>[] = [
     header: "Roles",
     cell: ({ row }) => {
       return (
-        <DropdownMenu>
+        <DropdownMenu key={row.original._id}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost">View Roles</Button>
           </DropdownMenuTrigger>
@@ -98,7 +98,7 @@ export const userColumns: ColumnDef<User>[] = [
     id: "actions",
     cell: ({ row }) => {
       const user = row.original;
-      return <UserDropdown user={user} />;
+      return <UserDropdown key={user._id} user={user} />;
     },
   },
 ];

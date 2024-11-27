@@ -23,7 +23,7 @@ export const roleColumns: ColumnDef<Role>[] = [
     header: "Roles",
     cell: ({ row }) => {
       return (
-        <DropdownMenu>
+        <DropdownMenu key={row.original._id}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost">View Permissions</Button>
           </DropdownMenuTrigger>
@@ -35,7 +35,9 @@ export const roleColumns: ColumnDef<Role>[] = [
               <DropdownMenuItem>No Permissions Assigned</DropdownMenuItem>
             ) : (
               row.original.permissions.map((permission: string) => (
-                <DropdownMenuItem>{permission}</DropdownMenuItem>
+                <DropdownMenuItem key={permission}>
+                  {permission}
+                </DropdownMenuItem>
               ))
             )}
           </DropdownMenuContent>
@@ -63,7 +65,7 @@ export const roleColumns: ColumnDef<Role>[] = [
     cell: ({ row }) => {
       const role = row.original;
 
-      return <RoleDropdown role={role} />;
+      return <RoleDropdown key={role._id} role={role} />;
     },
   },
 ];

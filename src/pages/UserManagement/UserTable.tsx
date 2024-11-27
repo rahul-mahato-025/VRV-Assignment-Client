@@ -26,15 +26,16 @@ import UserForm from "./UserForm";
 import { createUser } from "@/services/userApi";
 import { Modal } from "@/components/shared/Modal";
 import { DataTable } from "@/components/shared/DataTable";
+import { User } from "@/types/user";
 
 interface UserTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  users: User[];
 }
 
 export function UserTable<TData, TValue>({
   columns,
-  data,
+  users,
 }: UserTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -43,7 +44,7 @@ export function UserTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const table = useReactTable({
-    data,
+    data: users as TData[],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -62,7 +63,7 @@ export function UserTable<TData, TValue>({
   const [addUserModal, setAddUserModal] = React.useState(false);
 
   return (
-    <DataTable columns={columns} data={data} table={table}>
+    <DataTable columns={columns} data={users as TData[]} table={table}>
       <div className="flex items-center py-4 justify-between">
         <Input
           placeholder="Filter first names..."
@@ -84,11 +85,7 @@ export function UserTable<TData, TValue>({
               asActionItem
               icon={<UserRoundPlus />}
               FormType={
-                <UserForm
-                  btnText="Submit"
-                  onSubmit={createUser}
-                  setOpen={setAddUserModal}
-                />
+                <UserForm onSubmit={createUser} setOpen={setAddUserModal} />
               }
             />
           }

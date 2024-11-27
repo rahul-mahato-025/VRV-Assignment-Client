@@ -24,11 +24,13 @@ import {
 } from "@/components/ui/form";
 import { useMutation } from "react-query";
 import { User } from "./UserColumns";
+import { Button } from "@/components/ui/button";
+import Spinner from "@/components/shared/Spinner";
+import { useUsers } from "@/hooks/use-users";
 
 export interface UserFormProps<T> {
   className?: string;
   user?: User;
-  btnText: string;
   onSubmit: (data: T) => Promise<any>;
   setOpen: (val: boolean) => void;
 }
@@ -53,14 +55,9 @@ const userSchema = z.object({
   roles: z.array(z.string()).default([]),
 });
 
-function UserForm<T>({
-  className,
-  user,
-  btnText,
-  onSubmit,
-  setOpen,
-}: UserFormProps<T>) {
+function UserForm<T>({ className, user, onSubmit, setOpen }: UserFormProps<T>) {
   const { toast } = useToast();
+  const { users, updateUsers } = useUsers();
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
@@ -73,9 +70,26 @@ function UserForm<T>({
     },
   });
 
+  function hasUser(updatedUser: User) {
+    return users.find((user) => user._id === updatedUser._id);
+  }
+
+  function handleUpdate(updatedUser: User) {
+    if (!hasUser(updatedUser)) {
+      updateUsers([...users, updatedUser]);
+      return;
+    }
+    const newUsers = users.map((user) => {
+      if (user._id === updatedUser._id) return updatedUser;
+      return user;
+    });
+    updateUsers(newUsers);
+  }
+
   const mutation = useMutation({
     mutationFn: onSubmit,
     onSuccess: (data) => {
+      handleUpdate(data.data);
       setOpen(false);
       toast({
         variant: "success",
@@ -103,7 +117,6 @@ function UserForm<T>({
       <FormComponent
         onSubmit={form.handleSubmit(handleFormSubmit)}
         className={className}
-        btnText={btnText}
       >
         <FormField
           control={form.control}
@@ -202,6 +215,9 @@ function UserForm<T>({
             )}
           />
         </div>
+        <Button type="submit">
+          {mutation.isLoading ? <Spinner /> : "Submit"}
+        </Button>
       </FormComponent>
     </Form>
   );
