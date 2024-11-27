@@ -8,8 +8,8 @@ import { useUsers } from "@/hooks/use-users";
 
 export function UserManagement() {
   const { users, updateUsers } = useUsers();
-  const { isLoading, data } = useQuery("usersList", getAllUsers, {
-    onSuccess: () => updateUsers(data.data),
+  const { isLoading } = useQuery("usersList", getAllUsers, {
+    onSuccess: (data) => updateUsers(data.data),
   });
 
   if (isLoading) return <DataTableSkeleton />;
