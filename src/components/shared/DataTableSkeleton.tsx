@@ -11,7 +11,7 @@ function DataTableSkeleton() {
       </div>
       <Skeleton className="h-[90vh] w-[90%] rounded-xl flex flex-col gap-5  px-4 py-4">
         <div className="space-y-6">
-          {items.map((item, index) => {
+          {items.map((_item, index) => {
             return <Skeleton key={index} className="h-8 w-[100%]" />;
           })}
         </div>

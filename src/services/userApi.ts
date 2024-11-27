@@ -36,7 +36,7 @@ export async function updateUser({ userId, userData }: updateUserTypes) {
   return data;
 }
 
-export async function deleteUser({ id }) {
+export async function deleteUser({ id }: { id: string }) {
   const response = await instance.delete(`/users/${id}`);
   if (response.data.success === false) throw new Error(response.data.message);
   return response.data;
