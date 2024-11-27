@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 
 // Menu items.
 const items = [
@@ -42,10 +43,10 @@ export function SideBar() {
                       asChild
                       className="hover:bg-foreground hover:text-background transition-all."
                     >
-                      <a href={item.url}>
+                      <Link to={item.url}>
                         <item.icon />
                         <span className="font-semibold">{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
